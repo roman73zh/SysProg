@@ -1,0 +1,15 @@
+D:\Много чего\Учеба\Системное программирование\SysProg\bin\Debug\net6.0\Lab1.exe
+D:\Много чего\Учеба\Системное программирование\SysProg\bin\Debug\net6.0\Lab1.deps.json
+D:\Много чего\Учеба\Системное программирование\SysProg\bin\Debug\net6.0\Lab1.runtimeconfig.json
+D:\Много чего\Учеба\Системное программирование\SysProg\bin\Debug\net6.0\Lab1.dll
+D:\Много чего\Учеба\Системное программирование\SysProg\bin\Debug\net6.0\Lab1.pdb
+D:\Много чего\Учеба\Системное программирование\SysProg\obj\Debug\net6.0\Lab1.csproj.AssemblyReference.cache
+D:\Много чего\Учеба\Системное программирование\SysProg\obj\Debug\net6.0\Lab1.GeneratedMSBuildEditorConfig.editorconfig
+D:\Много чего\Учеба\Системное программирование\SysProg\obj\Debug\net6.0\Lab1.AssemblyInfoInputs.cache
+D:\Много чего\Учеба\Системное программирование\SysProg\obj\Debug\net6.0\Lab1.AssemblyInfo.cs
+D:\Много чего\Учеба\Системное программирование\SysProg\obj\Debug\net6.0\Lab1.csproj.CoreCompileInputs.cache
+D:\Много чего\Учеба\Системное программирование\SysProg\obj\Debug\net6.0\Lab1.dll
+D:\Много чего\Учеба\Системное программирование\SysProg\obj\Debug\net6.0\refint\Lab1.dll
+D:\Много чего\Учеба\Системное программирование\SysProg\obj\Debug\net6.0\Lab1.pdb
+D:\Много чего\Учеба\Системное программирование\SysProg\obj\Debug\net6.0\Lab1.genruntimeconfig.cache
+D:\Много чего\Учеба\Системное программирование\SysProg\obj\Debug\net6.0\ref\Lab1.dll
