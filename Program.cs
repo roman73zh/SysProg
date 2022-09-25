@@ -24,4 +24,5 @@ foreach (FileInfo file in files)
         Console.WriteLine(identifier.ToString());
     }
     Console.WriteLine("#############################################################################");
+    proc.clear();
 }

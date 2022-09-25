@@ -242,5 +242,11 @@ namespace Lab1
             return identifiers;
         }
 
+        public void clear()
+        {
+            lexems.Clear();
+            identifiers.Clear();
+            variables.Clear();
+        }
     }
 }

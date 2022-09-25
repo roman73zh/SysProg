@@ -45,7 +45,8 @@ namespace Lab1.Consts
             "throw",
             "goto",
             "string",
-            "virtual"
+            "virtual",
+            "namespace"
         };
 
         public static readonly Dictionary<string, (int, string)> dataTypes = new Dictionary<string, (int, string)>() {
