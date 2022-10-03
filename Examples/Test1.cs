@@ -1,8 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Lab1.Examples
 {
@@ -12,7 +8,8 @@ namespace Lab1.Examples
         {
             for (int i = 0; i < 20; i++)
             {
-                Console.WriteLine(i);
+                for (int j = 0; j < 20; j++)
+                    Console.WriteLine(" i = {0:D}, j = {1:D}", i, j);
             }
         }
 

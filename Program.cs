@@ -1,5 +1,4 @@
 ﻿using Lab1;
-Console.WriteLine("Hello, World!");
 DirectoryInfo dirInfo = new DirectoryInfo("../../../Examples/");
 FileInfo[] files = dirInfo.GetFiles("*.*");
 LexemProc proc = new LexemProc();

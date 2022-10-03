@@ -13,11 +13,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "D:\\Много чего\\Учеба\\Системное программирование\\SysProg\\Lab1.csproj",
+      "projectUniqueName": "D:\\Много чего\\Учеба\\Системное ПО\\SysProg\\Lab1.csproj",
       "projectName": "Lab1",
-      "projectPath": "D:\\Много чего\\Учеба\\Системное программирование\\SysProg\\Lab1.csproj",
+      "projectPath": "D:\\Много чего\\Учеба\\Системное ПО\\SysProg\\Lab1.csproj",
       "packagesPath": "C:\\Users\\Роман\\.nuget\\packages\\",
-      "outputPath": "D:\\Много чего\\Учеба\\Системное программирование\\SysProg\\obj\\",
+      "outputPath": "D:\\Много чего\\Учеба\\Системное ПО\\SysProg\\obj\\",
       "projectStyle": "PackageReference",
       "configFilePaths": [
         "C:\\Users\\Роман\\AppData\\Roaming\\NuGet\\NuGet.Config",
