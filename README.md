@@ -1,2 +1,2 @@
 # SysProg
-System programming labs
+System software lab 2
