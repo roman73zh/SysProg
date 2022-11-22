@@ -124,11 +124,11 @@ namespace Lab1
                             {
                                 if (variables.Any(v => v.name.Equals(buffer)))
                                 {
-                                    addLexem(Lexem.Types.Variable, variables.FindIndex(v => v.name == buffer), $"variable <{buffer}>");
+                                    addLexem(Lexem.Types.Variable, variables.FindIndex(v => v.name == buffer), buffer);
                                 }
                                 else if (identifiers.Any(i => i.name.Equals(buffer)))
                                 {
-                                    addLexem(Lexem.Types.Identifier, variables.FindIndex(i => i.name == buffer), $"identifier <{buffer}>");
+                                    addLexem(Lexem.Types.Identifier, variables.FindIndex(i => i.name == buffer), buffer);
                                 }
                                 else
                                 {
@@ -136,12 +136,12 @@ namespace Lab1
                                     if (variableType == null || variableType.type != Lexem.Types.DataType)
                                     {
                                         identifiers.Add(new Identifier(identifiers.Count, buffer));
-                                        addLexem(Lexem.Types.Identifier, identifiers.Count - 1, $"identifier <{buffer}>");
+                                        addLexem(Lexem.Types.Identifier, identifiers.Count - 1, buffer);
                                     }
                                     else
                                     {
                                         variables.Add(new Variable(variables.Count, variableType.desc, buffer));
-                                        addLexem(Lexem.Types.Variable, variables.Count - 1, $"<{variableType.desc}> variable <{buffer}>");
+                                        addLexem(Lexem.Types.Variable, variables.Count - 1, buffer);
                                     }
                                 }
                             }
