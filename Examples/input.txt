@@ -1,6 +1,9 @@
 ﻿int a = 10;
 int b = 15;
-int c = 5;
+int c = (a + 2) * 5;
+bool f;
+f = c > true;
+f = true;
 int d;
 for (int i = 0, k = 5; i < k; i++)
 {

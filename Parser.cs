@@ -16,11 +16,12 @@ namespace Lab1
 
         int lexemIndex;
 
-        public void panic (String reason = "")
+        public Leaf panic (String reason = "")
         {
             Console.Write("PAAAAANIIIIIC!!!!");
             if (reason != "")
                 Console.WriteLine($"\t причина: {reason}");
+            return new Leaf(null, Lexem.Types.ParsingError, 0, "Error state");
         }
 
         public void loadLexems(List<Lexem> lexems)
@@ -51,15 +52,103 @@ namespace Lab1
             return lexems[lexemIndex];
         }
 
-        private TreeElement parseExpression(Node prev)
+        private int priority(Lexem lexem)
+        {
+            String str = lexem.desc;
+            if (str == "mul_operation" || str == "div_operation" || str == "mod_operation")
+                return 3;
+            else if (str == "sum_operation" || str == "sub_operation")
+                return 2;
+            else return 1;
+        }
+
+
+        private TreeElement parseIntegerExpression(Node prev)
         {
             TreeElement localRoot = null;
+            List<Lexem> outLexems = new List<Lexem>();
+            Stack<Lexem> st = new Stack<Lexem> ();
+            int openedScopes = 0;
             do
             {
+                if (peekLexem().type == Lexem.Types.Operation && peekLexem().desc.Contains("comparison"))
+                    break;
                 Lexem lexem = nextLexem();
-                localRoot = new Leaf((Node)prev, Lexem.Types.Constant, lexem.id, lexem.id.ToString());
+                if (lexem == null)
+                    break;
+                if (lexem.type == Lexem.Types.Variable || lexem.type == Lexem.Types.Constant || lexem.type == Lexem.Types.Identifier || lexem.type == Lexem.Types.Keyword)
+                {
+                    if ((lexem.type == Lexem.Types.Variable || lexem.type == Lexem.Types.Identifier) && (!variables.Any(v => v.name == lexem.desc)))
+                        panic("Необъявленная переменная");
+                    if (lexem.type == Lexem.Types.Variable && variables.FirstOrDefault(v => v.name == lexem.desc).dataType == "boolean")
+                        panic("Недопустимое использование переменной типа bool");
+                    if (lexem.type == Lexem.Types.Keyword && (lexem.desc == "true" || lexem.desc == "false"))
+                        return panic("Нельзя использовать логические значения в численных выражениях");
+                    outLexems.Add(lexem);
+                } else if (lexem.type == Lexem.Types.Delimeter && lexem.desc == "(")
+                {
+                    st.Push(lexem);
+                    openedScopes++;
+                } else if (lexem.type == Lexem.Types.Delimeter && lexem.desc == ")")
+                {
+                    Lexem temp = st.Pop();
+                    while(temp.type != Lexem.Types.Delimeter && temp.desc != "(")
+                    {
+                        outLexems.Add(temp);
+                        temp = st.Pop();
+                    }
+                    openedScopes--;
+                } else
+                {
+                    if (st.Count == 0 || priority(st.Peek()) < priority(lexem)){
+                        st.Push(lexem);
+                    }
+                    else
+                    {
+                        Lexem temp = lexem;
+                        while (!(st.Count == 0 || priority(st.Peek()) < priority(temp)))
+                        {
+                            outLexems.Add(st.Pop());
+                        }
+                        st.Push(lexem);
+                    }
+                }
             }
-            while (peekLexem().type != Lexem.Types.Delimeter);
+            while (peekLexem().type != Lexem.Types.Delimeter || !(peekLexem().desc == ";" || peekLexem().desc == "," || peekLexem().desc == ")" && openedScopes == 0));
+            while (st.Count > 0)
+                outLexems.Add(st.Pop());
+            Stack<TreeElement> treeStack = new Stack<TreeElement> ();
+            foreach (var lexem in outLexems)
+            {
+                if (lexem.type == Lexem.Types.Constant || lexem.type == Lexem.Types.Variable || lexem.type == Lexem.Types.Identifier)
+                {
+                    treeStack.Push(new Leaf(null, lexem.type, lexem.id, lexem.desc));
+                } else
+                {
+                    if (treeStack.Count() > 1)
+                    {
+                        TreeElement b = treeStack.Pop();
+                        TreeElement a = treeStack.Pop();
+                        Node temp = new Node(null, lexem.desc);
+                        b.prev = temp;
+                        a.prev = temp;
+                        temp.a = a;
+                        temp.b = b;
+                        treeStack.Push(temp);
+                    } else
+                    {
+                        panic("Некорректный синтаксис арифметического выражения");
+                    }
+                }
+            }
+            if (treeStack.Count != 1)
+            {
+                panic("Некорректный синтаксис арифметического выражения");
+            } else
+            {
+                localRoot = treeStack.Pop();
+                localRoot.prev = prev;
+            }
             return localRoot;
         }
 
@@ -77,11 +166,40 @@ namespace Lab1
             return localRoot;
         }
 
+        private TreeElement parseBoolExpression(Node prev)
+        {
+            TreeElement localRoot = null;
+            if (peekLexem().type == Lexem.Types.Keyword && (peekLexem().desc == "true" || peekLexem().desc == "false"))
+            {
+                nextLexem();
+                localRoot = new Leaf(prev, Lexem.Types.Keyword, currentLexem().id, currentLexem().desc);
+                if (peekLexem().type != Lexem.Types.Delimeter)
+                    panic("Данные после конца условного выражения");
+            } else
+            {
+                TreeElement a = parseIntegerExpression(prev);
+                Lexem op = nextLexem();
+                TreeElement b = parseIntegerExpression(prev);
+                localRoot = new Node(prev, op.desc);
+                ((Node)localRoot).a = a;
+                ((Node)localRoot).b = b;
+                a.prev = localRoot;
+                b.prev = localRoot;
+            }
+            return localRoot;
+        }
+
         private Node parseAssign(Node prev)
         {
             Node localRoot = new Node(prev, "Assign node");
             localRoot.a = new Leaf(localRoot, Lexem.Types.Variable, variables.FindIndex(v => v.name == prevLexem().desc), prevLexem().desc);
-            localRoot.b = parseExpression(localRoot);
+            if (variables.FirstOrDefault(v => v.name == prevLexem().desc).dataType == "boolean")
+            {
+                localRoot.b = parseBoolExpression(localRoot);
+            } else
+            {
+                localRoot.b = parseIntegerExpression(localRoot);
+            }
             return localRoot;
         }
 

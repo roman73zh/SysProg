@@ -97,7 +97,7 @@ namespace Lab1
                         }
                         else
                         {
-                            addLexem(Lexem.Types.Constant, int.Parse(buffer), $"integer, value = {buffer}");
+                            addLexem(Lexem.Types.Constant, int.Parse(buffer), $"{buffer}");
                             state = ProcState.Idle;
                         }
                     }

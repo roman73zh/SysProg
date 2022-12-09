@@ -59,6 +59,7 @@ namespace Lab1.Consts
             { "byte", (6, "uint8") },
             { "sbyte", (7, "int8") },
             { "string", (8, "string")},
+            { "bool", (9, "boolean")},
         };
 
         public static readonly string[] delimiters = { ";", ".", ",", "(", ")", "{", "}", "[", "]" };
