@@ -178,6 +178,10 @@ namespace Lab1
             } else
             {
                 TreeElement a = parseIntegerExpression(prev);
+                if (peekLexem().type == Lexem.Types.Delimeter)
+                {
+                    return a;
+                }
                 Lexem op = nextLexem();
                 TreeElement b = parseIntegerExpression(prev);
                 localRoot = new Node(prev, op.desc);
@@ -300,7 +304,7 @@ namespace Lab1
                 panic("Неправильно объявлен for - ошибка в разделителях");
             }
             if (peekLexem().type != Lexem.Types.Delimeter)
-                localRoot.a = parseCondition(localRoot);
+                localRoot.a = parseBoolExpression(localRoot);
             else
                 localRoot.a = new Leaf((Node)prev, Lexem.Types.Operation, 0, "True node");
             if (peekLexem().type == Lexem.Types.Delimeter && peekLexem().desc == ";")
