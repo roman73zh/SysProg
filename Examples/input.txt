@@ -1,9 +1,9 @@
-﻿int a = 10;
-int b = 15;
-int c = (a + 2) * 5;
+﻿int a = 8 & 10;
 bool f;
-f = c > 3;
-f = true;
+f = true && a > 5;
+int b = 15;
+int c = (a++ + 2) * 5;
+
 int d;
 for (int i = 0, k = 5; i < k; i++)
 {

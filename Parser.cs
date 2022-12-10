@@ -47,6 +47,11 @@ namespace Lab1
             return lexems[lexemIndex - 2];
         }
 
+        private void forwardLexem(int step = 1)
+        {
+            lexemIndex -= step; ;
+        }
+
         private Lexem peekLexem()
         {
             return lexems[lexemIndex];
@@ -55,34 +60,37 @@ namespace Lab1
         private int priorityFull(Lexem lexem)
         {
             String str = lexem.desc;
-            if (str == "mul_operation" || str == "div_operation" || str == "mod_operation")
+            if (str == "inc_operation" || str == "dec_operation")
+                return 13;
+            else if (str == "mul_operation" || str == "div_operation" || str == "mod_operation")
                 return 12;
             else if (str == "sum_operation" || str == "sub_operation")
                 return 11;
+            else if (str == "more_comparison" || str == "less_comparison" || str == "more_equ_comparison" || str == "less_equ_comparison")
+                return 9;
             else if (str == "equal_comparison" || str == "not_equal_comparison")
                 return 8;
+            else if (str == "bit_and_operator")
+                return 7;
+            else if (str == "bit_or_operator")
+                return 6;
             else if (str == "and_operation")
                 return 4;
             else if (str == "or_operation")
                 return 3;
-            else return 1;
-        }
-
-        private int priority(Lexem lexem)
-        {
-            String str = lexem.desc;
-            if (str == "mul_operation" || str == "div_operation" || str == "mod_operation")
-                return 3;
-            else if (str == "sum_operation" || str == "sub_operation")
-                return 2;
-            else return 1;
+            else if (str == "assign_operation")
+                return 1;
+            else
+                return 0;
         }
 
         private int getDataType(Lexem lexem)
         {
             if (lexem.type == Lexem.Types.Keyword && (lexem.desc == "true" || lexem.desc == "false"))
                 return 1;
-            else if (lexem.type == Lexem.Types.Operation && (lexem.desc.Contains("comparison")))
+            else if (lexem.type == Lexem.Types.Operation && lexem.desc.Contains("comparison"))
+                return 1;
+            else if (lexem.type == Lexem.Types.Operation && (lexem.desc.Contains("and_operation") || lexem.desc.Contains("or_operation")))
                 return 1;
             else if (lexem.type == Lexem.Types.Variable && variables.FirstOrDefault(v => v.name == lexem.desc).dataType == "boolean")
                 return 1;
@@ -123,14 +131,14 @@ namespace Lab1
                 }
                 else
                 {
-                    if (st.Count == 0 || priority(st.Peek()) < priority(lexem))
+                    if (st.Count == 0 || priorityFull(st.Peek()) < priorityFull(lexem))
                     {
                         st.Push(lexem);
                     }
                     else
                     {
                         Lexem temp = lexem;
-                        while (!(st.Count == 0 || priorityFull(st.Peek()) < priority(temp)))
+                        while (!(st.Count == 0 || priorityFull(st.Peek()) < priorityFull(temp)))
                         {
                             outLexems.Add(st.Pop());
                         }
@@ -150,23 +158,47 @@ namespace Lab1
                 }
                 else
                 {
-                    if (treeStack.Count() > 1)
+                    
+                    if (lexem.desc == "inc_operation" || lexem.desc == "dec_operation")
                     {
-                        var b = treeStack.Pop();
-                        var a = treeStack.Pop();
-                        Node temp = new Node(null, lexem.desc);
-                        int reqType = Consts.Constants.operators.FirstOrDefault(t => t.Value.Item2 == lexem.desc).Value.Item3;
-                        b.Item1.prev = temp;
-                        a.Item1.prev = temp;
-                        temp.a = a.Item1;
-                        temp.b = b.Item1;
-                        if (reqType > a.Item2 || reqType > b.Item2)
-                            panic("Ошибка приведения типов");
-                        treeStack.Push((temp, getDataType(lexem)));
+                        if (treeStack.Count() > 0)
+                        {
+                            var a = treeStack.Pop();
+                            Node temp = new Node(null, lexem.desc);
+                            int reqType = Consts.Constants.operators.FirstOrDefault(t => t.Value.Item2 == lexem.desc).Value.Item3;
+                            a.Item1.prev = temp;
+                            temp.a = a.Item1;
+                            if (reqType > a.Item2)
+                                panic("Ошибка приведения типов");
+                            treeStack.Push((temp, getDataType(lexem)));
+                        }
+                        else
+                        {
+                            panic("Некорректный синтаксис арифметического выражения");
+                        }
                     }
                     else
                     {
-                        panic("Некорректный синтаксис арифметического выражения");
+                        if (treeStack.Count() > 1)
+                        {
+                            var b = treeStack.Pop();
+                            var a = treeStack.Pop();
+                            Node temp = new Node(null, lexem.desc);
+                            int reqType = Consts.Constants.operators.FirstOrDefault(t => t.Value.Item2 == lexem.desc).Value.Item3;
+                            if (lexem.desc == "assign_operation")
+                                reqType = a.Item2;
+                            b.Item1.prev = temp;
+                            a.Item1.prev = temp;
+                            temp.a = a.Item1;
+                            temp.b = b.Item1;
+                            if (reqType > a.Item2 || reqType > b.Item2)
+                                panic("Ошибка приведения типов");
+                            treeStack.Push((temp, getDataType(lexem)));
+                        }
+                        else
+                        {
+                            panic("Некорректный синтаксис арифметического выражения");
+                        }
                     }
                 }
             }
@@ -196,12 +228,22 @@ namespace Lab1
             return localRoot;
         }
 
-        private Node parseAssign(Node prev)
+        private Node parseAssignO(Node prev)
         {
             Node localRoot = new Node(prev, "Assign node");
             localRoot.a = new Leaf(localRoot, Lexem.Types.Variable, variables.FindIndex(v => v.name == prevLexem().desc), prevLexem().desc);
             localRoot.b = parseExpression(localRoot);
             return localRoot;
+        }
+
+        private Node parseAssign(Node prev)
+        {
+            forwardLexem(2);
+            TreeElement result = parseExpression(prev);
+            if (result.GetType() == typeof(Node))
+                return (Node)result;
+            else
+                return new Node(prev);
         }
 
         private Node parseDeclaration(Node prev, Lexem dataType = null)
@@ -301,7 +343,7 @@ namespace Lab1
                 panic("Неправильно объявлен for - ошибка в разделителях");
             }
             if (peekLexem().type != Lexem.Types.Delimeter)
-                localRoot.a = parseBoolExpression(localRoot);
+                localRoot.a = parseExpression(localRoot);
             else
                 localRoot.a = new Leaf((Node)prev, Lexem.Types.Operation, 0, "True node");
             if (peekLexem().type == Lexem.Types.Delimeter && peekLexem().desc == ";")
