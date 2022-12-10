@@ -60,7 +60,7 @@ namespace Lab1
         private int priorityFull(Lexem lexem)
         {
             String str = lexem.desc;
-            if (str == "inc_operation" || str == "dec_operation")
+            if (str == "inc_operation" || str == "dec_operation" || str == "inversion")
                 return 13;
             else if (str == "mul_operation" || str == "div_operation" || str == "mod_operation")
                 return 12;
@@ -90,7 +90,7 @@ namespace Lab1
                 return 1;
             else if (lexem.type == Lexem.Types.Operation && lexem.desc.Contains("comparison"))
                 return 1;
-            else if (lexem.type == Lexem.Types.Operation && (lexem.desc.Contains("and_operation") || lexem.desc.Contains("or_operation")))
+            else if (lexem.type == Lexem.Types.Operation && (lexem.desc.Contains("and_operation") || lexem.desc.Contains("or_operation") || lexem.desc.Contains("inversion")))
                 return 1;
             else if (lexem.type == Lexem.Types.Variable && variables.FirstOrDefault(v => v.name == lexem.desc).dataType == "boolean")
                 return 1;
@@ -159,7 +159,7 @@ namespace Lab1
                 else
                 {
                     
-                    if (lexem.desc == "inc_operation" || lexem.desc == "dec_operation")
+                    if (lexem.desc == "inc_operation" || lexem.desc == "dec_operation" || lexem.desc == "inversion")
                     {
                         if (treeStack.Count() > 0)
                         {

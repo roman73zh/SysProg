@@ -84,7 +84,7 @@ namespace Lab1.Consts
             {"<", (16, "less_comparison", 2)},
             {">=", (17, "more_equ_comparison", 2)},
             {"<=", (18, "less_equ_comparison", 2)},
-            //{"!", (19, "not_comparison", 0)},
+            {"!", (19, "inversion", 0)},
             {"&&", (20, "and_operation", 1)},
             {"||", (21, "or_operation", 1)},
             {"&", (22, "bit_and_operator", 2)},

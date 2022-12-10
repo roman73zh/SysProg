@@ -1,6 +1,6 @@
 ﻿int a = 8 & 10;
 bool f;
-f = true && a > 5;
+f = !true && a > 5;
 int b = 15;
 int c = (a++ + 2) * 5;
 
