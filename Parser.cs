@@ -214,28 +214,6 @@ namespace Lab1
             return localRoot;
         }
 
-        private TreeElement parseCondition(Node prev)
-        {
-            TreeElement localRoot = null;
-            localRoot = new Leaf((Node)prev, Lexem.Types.Operation, 0, "Condition node (");
-            do
-            {
-                Lexem lexem = nextLexem();
-                ((Leaf)localRoot).content += lexem.desc + " ";
-            }
-            while (peekLexem().type != Lexem.Types.Delimeter);
-            ((Leaf)localRoot).content += ")";
-            return localRoot;
-        }
-
-        private Node parseAssignO(Node prev)
-        {
-            Node localRoot = new Node(prev, "Assign node");
-            localRoot.a = new Leaf(localRoot, Lexem.Types.Variable, variables.FindIndex(v => v.name == prevLexem().desc), prevLexem().desc);
-            localRoot.b = parseExpression(localRoot);
-            return localRoot;
-        }
-
         private Node parseAssign(Node prev)
         {
             forwardLexem(2);
@@ -277,14 +255,6 @@ namespace Lab1
             return result;
         }
 
-        private Node parseInc(Node prev)
-        {
-            Node localRoot = new Node(prev, "Inc node");
-            localRoot.a = new Leaf(localRoot, Lexem.Types.Variable, variables.FindIndex(v => v.name == prevLexem().desc), prevLexem().desc);
-            localRoot.b = new Leaf((Node)prev, Lexem.Types.Constant, 1, 1.ToString());
-            return localRoot;
-        }
-
         private Node parseSingleStmt(Node prev)
         {
             Node localRoot = null;
@@ -292,14 +262,10 @@ namespace Lab1
             {
                 if (!variables.Any(v => v.name == currentLexem().desc))
                     panic("Необъявленная переменная");
-                if (peekLexem().type == Lexem.Types.Operation && peekLexem().id == Consts.Constants.operators["="].Item1)
+                if (peekLexem().type == Lexem.Types.Operation)
                 {
                     nextLexem();
                     localRoot = parseAssign(prev);
-                } else if (peekLexem().type == Lexem.Types.Operation && peekLexem().id == Consts.Constants.operators["++"].Item1)
-                {
-                    nextLexem();
-                    localRoot = parseInc(prev);
                 }
             }
             else
