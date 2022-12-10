@@ -64,27 +64,30 @@ namespace Lab1.Consts
 
         public static readonly string[] delimiters = { ";", ".", ",", "(", ")", "{", "}", "[", "]" };
 
-        public static readonly Dictionary<string, (int, string)> operators = new Dictionary<string, (int, string)>() {
-            {"=", (0, "assign_operation")},
-            {"+", (1, "sum_operation")},
-            {"-", (2, "sub_operation")},
-            {"*", (3, "mul_operation")},
-            {"/", (4, "div_operation")},
-            {"%", (5, "mod_operation")},
-            {"++", (6, "inc_operation")},
-            {"--", (7, "dec_operation")},
-            {"+=", (8, "add_amount_operation")},
-            {"-=", (9, "sub_amount_operation")},
-            {"*=", (10, "mul_amount_operation")},
-            {"/=", (11, "div_amount_operation")},
-            {"%=", (12, "mod_amount_operation")},
-            {"==", (13, "equal_comparison")},
-            {"!=", (14, "not_equal_comparison")},
-            {">", (15, "more_comparison")},
-            {"<", (16, "less_comparison")},
-            {">=", (17, "more_equ_comparison")},
-            {"<=", (18, "less_equ_comparison")},
-            {"!", (19, "not_comparison")}
+        public static readonly Dictionary<string, (int, string, int)> operators = new Dictionary<string, (int, string, int)>() {
+            {"=", (0, "assign_operation", 0)},
+            {"+", (1, "sum_operation", 2)},
+            {"-", (2, "sub_operation", 2)},
+            {"*", (3, "mul_operation", 2)},
+            {"/", (4, "div_operation", 2)},
+            {"%", (5, "mod_operation", 2)},
+            {"++", (6, "inc_operation", 2)},
+            {"--", (7, "dec_operation", 2)},
+            {"+=", (8, "add_amount_operation", 2)},
+            {"-=", (9, "sub_amount_operation", 2)},
+            {"*=", (10, "mul_amount_operation", 2)},
+            {"/=", (11, "div_amount_operation", 2)},
+            {"%=", (12, "mod_amount_operation", 2)},
+            {"==", (13, "equal_comparison", 0)},
+            {"!=", (14, "not_equal_comparison", 0)},
+            {">", (15, "more_comparison", 2)},
+            {"<", (16, "less_comparison", 2)},
+            {">=", (17, "more_equ_comparison", 2)},
+            {"<=", (18, "less_equ_comparison", 2)},
+            //{"!", (19, "not_comparison", 0)},
+            {"&&", (20, "and_operation", 1)},
+            {"||", (21, "or_operation", 1)}
         };
+
     }
 }
