@@ -73,9 +73,12 @@ foreach (FileInfo file in files)
         Console.WriteLine(identifier.ToString());
     }
     */
-    Console.WriteLine("\n++++++++++++++++++++++++++++++++++++\nPython code:");
-    codeGenerator.loadTree(tree);
-    Console.WriteLine(codeGenerator.process());
+    if (parser.isSucces())
+    {
+        Console.WriteLine("\n++++++++++++++++++++++++++++++++++++\nPython code:");
+        codeGenerator.loadTree(tree);
+        Console.WriteLine(codeGenerator.process());
+    }
     Console.WriteLine("#############################################################################");
     proc.clear();
 }

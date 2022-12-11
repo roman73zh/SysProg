@@ -13,15 +13,21 @@ namespace Lab1
         private List<Lexem> lexems;
         Node root;
         private List<Variable> variables;
-
+        private bool hasErrors = false;
         int lexemIndex;
 
         public Leaf panic (String reason = "")
         {
+            hasErrors = true;
             Console.Write("PAAAAANIIIIIC!!!!");
             if (reason != "")
                 Console.WriteLine($"\t причина: {reason}");
             return new Leaf(null, Lexem.Types.ParsingError, 0, "Error state");
+        }
+
+        public bool isSucces()
+        {
+            return !hasErrors;
         }
 
         public void loadLexems(List<Lexem> lexems)
@@ -311,7 +317,7 @@ namespace Lab1
             if (peekLexem().type != Lexem.Types.Delimeter)
                 localRoot.a = parseExpression(localRoot);
             else
-                localRoot.a = new Leaf((Node)prev, Lexem.Types.Operation, 0, "True node");
+                localRoot.a = new Leaf((Node)prev, Lexem.Types.Keyword, 0, "true");
             if (peekLexem().type == Lexem.Types.Delimeter && peekLexem().desc == ";")
             {
                 nextLexem();

@@ -99,6 +99,8 @@ namespace Lab1.Consts
             {"mul_operation", "*"},
             {"div_operation", "/"},
             {"mod_operation", "%"},
+            {"inc_operation", "+= 1"},
+            {"dec_operation", "-= 1"},
             {"add_amount_operation", "+="},
             {"sub_amount_operation", "-="},
             {"mul_amount_operation", "*="},
