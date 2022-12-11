@@ -46,6 +46,7 @@ DirectoryInfo dirInfo = new DirectoryInfo("../../../Examples/");
 FileInfo[] files = dirInfo.GetFiles("*.*");
 LexemProc proc = new LexemProc();
 Parser parser = new Parser();
+Generator codeGenerator = new Generator();
 foreach (FileInfo file in files)
 {
     proc.LoadFile(file.ToString());
@@ -55,7 +56,7 @@ foreach (FileInfo file in files)
     parser.proceed();
     var tree = parser.getTree();
     printTree(tree);
-    
+    /*
     Console.WriteLine("\n++++++++++++++++++++++++++++++++++++\nLexems:");
     foreach (var lexem in proc.GetLexems())
     {
@@ -71,6 +72,10 @@ foreach (FileInfo file in files)
     {
         Console.WriteLine(identifier.ToString());
     }
+    */
+    Console.WriteLine("\n++++++++++++++++++++++++++++++++++++\nPython code:");
+    codeGenerator.loadTree(tree);
+    Console.WriteLine(codeGenerator.process());
     Console.WriteLine("#############################################################################");
     proc.clear();
 }

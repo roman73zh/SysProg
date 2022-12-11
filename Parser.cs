@@ -60,7 +60,7 @@ namespace Lab1
         private int priorityFull(Lexem lexem)
         {
             String str = lexem.desc;
-            if (str == "inc_operation" || str == "dec_operation" || str == "inversion")
+            if (str == "inc_operation" || str == "dec_operation" || str == "inversion_operation")
                 return 13;
             else if (str == "mul_operation" || str == "div_operation" || str == "mod_operation")
                 return 12;
@@ -70,9 +70,9 @@ namespace Lab1
                 return 9;
             else if (str == "equal_comparison" || str == "not_equal_comparison")
                 return 8;
-            else if (str == "bit_and_operator")
+            else if (str == "and_bit_operation")
                 return 7;
-            else if (str == "bit_or_operator")
+            else if (str == "or_bit_operation")
                 return 6;
             else if (str == "and_operation")
                 return 4;
@@ -90,7 +90,7 @@ namespace Lab1
                 return 1;
             else if (lexem.type == Lexem.Types.Operation && lexem.desc.Contains("comparison"))
                 return 1;
-            else if (lexem.type == Lexem.Types.Operation && (lexem.desc.Contains("and_operation") || lexem.desc.Contains("or_operation") || lexem.desc.Contains("inversion")))
+            else if (lexem.type == Lexem.Types.Operation && (lexem.desc.Contains("and_operation") || lexem.desc.Contains("or_operation") || lexem.desc.Contains("inversion_operation")))
                 return 1;
             else if (lexem.type == Lexem.Types.Variable && variables.FirstOrDefault(v => v.name == lexem.desc).dataType == "boolean")
                 return 1;
@@ -159,7 +159,7 @@ namespace Lab1
                 else
                 {
                     
-                    if (lexem.desc == "inc_operation" || lexem.desc == "dec_operation" || lexem.desc == "inversion")
+                    if (lexem.desc == "inc_operation" || lexem.desc == "dec_operation" || lexem.desc == "inversion_operation")
                     {
                         if (treeStack.Count() > 0)
                         {

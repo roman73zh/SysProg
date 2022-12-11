@@ -8,7 +8,7 @@ namespace Lab1.Models
 {
     internal class Leaf : TreeElement
     {
-        Lexem.Types type;
+        public Lexem.Types type;
         int id;
         public String content;
 

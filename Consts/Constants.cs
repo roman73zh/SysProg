@@ -84,11 +84,37 @@ namespace Lab1.Consts
             {"<", (16, "less_comparison", 2)},
             {">=", (17, "more_equ_comparison", 2)},
             {"<=", (18, "less_equ_comparison", 2)},
-            {"!", (19, "inversion", 0)},
+            {"!", (19, "inversion_operation", 0)},
             {"&&", (20, "and_operation", 1)},
             {"||", (21, "or_operation", 1)},
-            {"&", (22, "bit_and_operator", 2)},
-            {"|", (23, "bit_or_operator", 2)}
+            {"&", (22, "and_bit_operation", 2)},
+            {"|", (23, "or_bit_operation", 2)}
+        };
+
+        public static readonly Dictionary<string, string> pythonOperations = new Dictionary<string, string>
+        {
+            {"assign_operation", "="},
+            {"sum_operation", "+"},
+            {"sub_operation", "-"},
+            {"mul_operation", "*"},
+            {"div_operation", "/"},
+            {"mod_operation", "%"},
+            {"add_amount_operation", "+="},
+            {"sub_amount_operation", "-="},
+            {"mul_amount_operation", "*="},
+            {"div_amount_operation", "/="},
+            {"mod_amount_operation", "%="},
+            {"equal_comparison", "=="},
+            {"not_equal_comparison", "!="},
+            {"more_comparison", ">"},
+            {"less_comparison", "<"},
+            {"more_equ_comparison", ">="},
+            {"less_equ_comparison", "<="},
+            {"inversion_operation", "not"},
+            {"and_operation", "and"},
+            {"or_operation", "or"},
+            {"and_bit_operation", "&"},
+            {"or_bit_operation", "|"},
         };
 
     }
